@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Mammoth Alveoli</title>
+		<meta charset="utf-8">
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115495664-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'UA-115495664-1');
+		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Cabin|Muli|Quicksand" rel="stylesheet"> 
+		<link href="style.css" rel="stylesheet" type="text/css">
+	</head>
+
+	<body>
+
+		<script src="js/three.js"></script>
+		<script src="js/Detector.js"></script>
+
+		<script>
+
+			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+			var container;
+
+			var camera, scene, renderer;
+
+			var mesh, lightMesh, geometry;
+			var spheres = [];
+
+			var directionalLight, pointLight;
+
+			var mouseX = 0, mouseY = 0;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+			init();
+			animate();
+
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 100000 );
+				camera.position.z = 3200;
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.CubeTextureLoader()
+					.setPath( 'image/outdoor04/' )
+					.load( [ 'px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg' ] );
+
+				var geometry = new THREE.SphereBufferGeometry( 420, 32, 32 );
+
+				var randomColor = getRandomColor();
+				var material = new THREE.MeshBasicMaterial( { color: randomColor, envMap: scene.background, refractionRatio: 0.90 } );
+				material.envMap.mapping = THREE.CubeRefractionMapping;
+
+
+				for ( var i = 0; i < 100; i ++ ) {
+
+					var mesh = new THREE.Mesh( geometry, material );
+
+					mesh.position.x = Math.random() * 10000 - 5000;
+					mesh.position.y = Math.random() * 10000 - 5000;
+					mesh.position.z = Math.random() * 10000 - 6000;
+
+					mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 3 + 1;
+
+					scene.add( mesh );
+
+					spheres.push( mesh );
+
+				}
+
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function onWindowResize() {
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+
+			function onDocumentMouseMove(event) {
+				mouseX = ( event.clientX - windowHalfX ) * 10;
+				mouseY = ( event.clientY - windowHalfY ) * 10;
+
+			}
+
+			function animate() {
+				requestAnimationFrame( animate );
+				render();
+			}
+
+			function render() {
+				var timer = 0.00001 * Date.now();
+
+				for ( var i = 0, il = spheres.length; i < il; i ++ ) {
+
+					var sphere = spheres[ i ];
+
+					sphere.position.x = 5500 * Math.cos( timer + i );
+					sphere.position.y = 5000 * Math.sin( timer + i * 1.2 );
+
+				}
+
+				camera.position.x += ( mouseX - camera.position.x ) * .001;
+				camera.position.y += ( - mouseY - camera.position.y ) * .001;
+
+				camera.lookAt( scene.position );
+
+				renderer.render( scene, camera );
+			}
+
+			function getRandomColor() {
+			  var letters = '0123456789ABCDEF';
+			  var color = '#';
+			  for (var i = 0; i < 6; i++) {
+			    color += letters[Math.floor(Math.random() * 16)];
+			  }
+			  return color;
+			}
+		</script>
+
+		 <audio autoplay loop>
+		  <!-- <source src="sound/rumble.ogg" type="audio/ogg"> -->
+		  <!-- <source src="horse.mp3" type="audio/mpeg"> -->
+		  <!-- Your browser does not support the audio element. -->
+		</audio>
+		<audio autoplay loop>
+			<source src="sound/bubble.ogg" type="audio/ogg">
+		</audio>
+
+		<div id="main">
+			<marquee onmouseover="this.stop()" onmouseout="this.start()" behavior="scroll" direction="left" scrollamount="5" id="time" style="cursor:default">Opening Soon  &#8594; Opening Soon &#8594; Opening Soon &#8594; Opening Soon  &#8594; Opening Soon &#8594; Opening Soon &#8594; Opening Soon &#8594; Opening Soon &#8594; Opening Soon &#8594; Opening Soon &#8594; Opening Soon</marquee>
+			<div id="newsletter-page">
+				<div id="mc_embed_signup" >
+					<form action="https://mammothalveoli.us12.list-manage.com/subscribe/post?u=636904bc94029d6ceb7edc9f4&amp;id=a9d562b43a" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+					    <div id="mc_embed_signup_scroll">
+							<!-- <label for="mce-EMAIL" class="form-item">Email</label><br> -->
+							<input type="email" value="" name="EMAIL" class="email form-item" id="mce-EMAIL" placeholder="email" required>
+					    	<!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+					    	<div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_636904bc94029d6ceb7edc9f4_a9d562b43a" tabindex="-1" value=""></div>
+					    	<div class="clear">
+					    		<input type="submit" value="register" name="subscribe" id="mc-embedded-subscribe" class="button">&nbsp;
+					    		<a class="cancel" id="cancel-newsletter">cancel</a>
+					    	</div>
+					    </div>
+					</form>
+				</div>
+			</div>
+			<div id="inquery-page">
+				<form action="form-to-email.php" method="POST" id="inquery-form">
+					<!-- <albel or="name" class="form-item">Name</label><br> -->
+					<input type="text" class="input-field" name="name" size="64" maxlength="64" placeholder="name"><br>
+					<!-- <label for="email" class="form-item">Email</label><br> -->
+					<input type="text" class="input-field" name="email" size="64" maxlength="64" placeholder="email"><br>
+					<!-- <label for="message" class="form-item">Message</span><br> -->
+					<textarea type="text" class="input-field" id="message" name="message" placeholder="message"></textarea><br>
+					<!-- <p style="text-transform:lowercase">* all fields mandatory</p> -->
+					<input type="submit" name="submit" value="send">&nbsp;<a class="cancel" id="cancel-inquery">cancel</a>
+				</form>
+			</div>
+			<ul class="menu" id="core">
+				<li id="exhibitions"><a>exhibitions</a><div class="soon">coming soon</div></li>
+				<li id="artists"><a>artists</a><div class="soon">coming soon</div></li>
+				<li id="about"><a>about</a><div class="soon">coming soon</div></li>
+			</ul>
+			<ul id="social">
+				<li id="newsletter">newsletter<div class="follow">register</div></li>
+				<li id="inquery">inquery<div class="follow">message</div></li>
+				<li></li>
+				<li class="social-media"><a href="https://www.facebook.com/mammothalveoli"><img class="social-media-image" src="image/facebook2.png"></a><div class="follow">follow</div></li>
+				<li class="social-media"><a href="https://twitter.com/mammothalveoli"><img class="social-media-image" src="image/twitter2.png"></a><div class="follow">follow</div></li>
+				<li class="social-media"><a href="https://www.instagram.com/mammothalveoli/"><img class="social-media-image" src="image/instagram2.png"></a><div class="follow">follow</div></li>
+			</ul>
+			<marquee onmouseover="this.stop()" onmouseout="this.start()" behavior="scroll" direction="right" scrollamount="5" id="address" style="cursor:default">Mammoth Alveoli, Endsleigh Street, Bloomsbury, London  &#8594; Mammoth Alveoli, Endsleigh Street, Bloomsbury, London  &#8594; Mammoth Alveoli, Endsleigh Street, Bloomsbury, London &#8594; Mammoth Alveoli, Endsleigh Street, Bloomsbury, London</marquee>
+		</div>
+
+		<script>
+			$("#core li").mouseenter(function(){
+				$(".soon").hide(0);
+				$(this).children(".soon").show(0);
+			}).mouseleave(function(){
+				$(".soon").hide(0);
+			});
+
+			$("#social li").mouseenter(function(){
+				$(".follow").hide(0);
+				$(this).children(".follow").show(0);
+			}).mouseleave(function(){
+				$(".follow").hide(0);
+			});
+
+			$("#inquery").click(function(){
+				$("#inquery-page").animate({
+					"right": "20%", 
+					"opacity": "1"
+				}, 2000);
+			});
+
+			$("#newsletter").click(function(){
+				$("#newsletter-page").animate({
+					"right": "20%", 
+					"opacity": "1"
+				}, 2000);
+			});
+
+			$("#cancel-inquery").click(function(){
+				$("#inquery-page").animate({
+					"right": "-65%", 
+					"opacity": "0"
+				}, 2000);
+			});
+
+			$("#cancel-newsletter").click(function(){
+				$("#newsletter-page").animate({
+					"right": "-65%", 
+					"opacity": "0"
+				}, 2000);
+			});
+
+			// $(document).mouseup(function(e) {
+			//     var newsletter = $("#newsletter");
+			//     if (!newsletter.is(e.target) && newsletter.has(e.target).length === 0) {
+			//         $("#newsletter-page").animate({
+			// 			"right": "-65%", 
+			// 			"opacity": "0"
+			// 		}, 2000);
+			//     }
+			// });
+
+			// $(document).mouseup(function(e) {
+			//     var inquery = $("#inquery");
+			//     if (!inquery.is(e.target) && inquery.has(e.target).length === 0) {
+			//         $("#inquery-page").animate({
+			// 			"right": "-65%", 
+			// 			"opacity": "0"
+			// 		}, 2000);
+			//     }
+			// });
+
+			var frmvalidator  = new Validator("myemailform");
+			frmvalidator.addValidation("name","req","Please provide your name"); 
+			frmvalidator.addValidation("email","req","Please provide your email"); 
+			frmvalidator.addValidation("email","email","Please enter a valid email address"); 
+		</script>
+
+	</body>
+</html
